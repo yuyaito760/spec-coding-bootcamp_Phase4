@@ -26,7 +26,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_KEY: "sk-no-key-required"
         with:
-          args: >
-           --pr_agent.provider=anthropic
-           --anthropic.model=claude-3-5-sonnet
+          args: review
