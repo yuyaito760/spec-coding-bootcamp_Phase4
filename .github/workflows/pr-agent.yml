@@ -21,6 +21,12 @@ jobs:
        github.event.issue.pull_request)
 
     steps:
+      - name: Debug - Check secrets existence
+        run: |
+          echo "ANTHROPIC_API_KEY is set: ${{ secrets.ANTHROPIC_API_KEY != '' }}"
+          echo "Event name: ${{ github.event_name }}"
+          echo "PR number: ${{ github.event.pull_request.number }}"
+
       - name: Run PR-Agent
         uses: Codium-ai/pr-agent@main
         env:
