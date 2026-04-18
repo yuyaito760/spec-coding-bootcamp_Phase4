@@ -2,16 +2,16 @@
 
 ## タスクリスト
 
-- [ ] 1. AIモデル設定
-- [ ] 2. ツール定義（Context7・Tavily）
-- [ ] 3. チャットAPIルート
-- [ ] 4. ダークモード基盤
-- [ ] 5. ThemeToggle コンポーネント
-- [ ] 6. ToolStatus コンポーネント
-- [ ] 7. MessageItem・MessageList コンポーネント
-- [ ] 8. InputForm コンポーネント
-- [ ] 9. ChatInterface コンポーネント
-- [ ] 10. page.tsx 更新
+- [x] 1. AIモデル設定
+- [x] 2. ツール定義（Context7・Tavily）
+- [x] 3. チャットAPIルート
+- [x] 4. ダークモード基盤
+- [x] 5. ThemeToggle コンポーネント
+- [x] 6. ToolStatus コンポーネント
+- [x] 7. MessageItem・MessageList コンポーネント
+- [x] 8. InputForm コンポーネント
+- [x] 9. ChatInterface コンポーネント
+- [x] 10. page.tsx 更新
 
 ---
 
