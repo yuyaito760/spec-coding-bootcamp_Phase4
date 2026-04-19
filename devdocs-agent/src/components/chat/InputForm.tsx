@@ -15,10 +15,12 @@ export function InputForm({
 }: InputFormProps) {
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      if (!isLoading && input.trim()) {
-        const form = e.currentTarget.closest("form");
-        form?.requestSubmit();
+      if (input.endsWith("\n")) {
+        e.preventDefault();
+        if (!isLoading && input.trim()) {
+          const form = e.currentTarget.closest("form");
+          form?.requestSubmit();
+        }
       }
     }
   };
@@ -28,13 +30,13 @@ export function InputForm({
       onSubmit={onSubmit}
       className="border-t border-zinc-200 bg-white px-4 py-3 dark:border-zinc-700 dark:bg-zinc-900"
     >
-      <div className="flex items-end gap-2">
+      <div className="mx-auto flex w-full max-w-2xl items-end gap-2">
         <textarea
           value={input}
           onChange={onInputChange}
           onKeyDown={handleKeyDown}
-          placeholder="ライブラリについて質問してください..."
-          rows={1}
+          placeholder="ライブラリについて質問してください...（Enter で改行、空行で Enter を押すと送信）"
+          rows={3}
           className="flex-1 resize-none rounded-xl border border-zinc-300 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
         />
         <button

@@ -6,14 +6,15 @@ import { MessageItem } from "./MessageItem";
 
 interface MessageListProps {
   messages: UIMessage[];
+  status: string;
 }
 
-export function MessageList({ messages }: MessageListProps) {
+export function MessageList({ messages, status }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, status]);
 
   if (messages.length === 0) {
     return (
@@ -28,6 +29,15 @@ export function MessageList({ messages }: MessageListProps) {
       {messages.map((message) => (
         <MessageItem key={message.id} message={message} />
       ))}
+      {status === "submitted" && (
+        <div className="flex justify-start">
+          <div className="flex items-center gap-1.5 rounded-2xl bg-zinc-100 px-4 py-3 dark:bg-zinc-800">
+            <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 dark:bg-zinc-500 [animation-delay:-0.3s]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 dark:bg-zinc-500 [animation-delay:-0.15s]" />
+            <span className="h-2 w-2 animate-bounce rounded-full bg-zinc-400 dark:bg-zinc-500" />
+          </div>
+        </div>
+      )}
       <div ref={bottomRef} />
     </div>
   );

@@ -30,7 +30,7 @@ export function ChatInterface() {
         </h1>
         <ThemeToggle />
       </header>
-      <MessageList messages={messages} />
+      <MessageList messages={messages} status={status} />
       <InputForm
         input={input}
         isLoading={isLoading}
