@@ -1,4 +1,4 @@
-import { streamText } from "ai";
+import { streamText, convertToModelMessages, stepCountIs } from "ai";
 import { geminiModel } from "@/lib/ai/model";
 import {
   context7ResolveLibrary,
@@ -30,13 +30,13 @@ export async function POST(req: Request) {
   const result = streamText({
     model: geminiModel,
     system: systemPrompt,
-    messages,
+    messages: await convertToModelMessages(messages),
     tools: {
       context7ResolveLibrary,
       context7QueryDocs,
       tavilySearch,
     },
-    maxSteps: 5,
+    stopWhen: stepCountIs(5),
   });
 
   return result.toUIMessageStreamResponse();
