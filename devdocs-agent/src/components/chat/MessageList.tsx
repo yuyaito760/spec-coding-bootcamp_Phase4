@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { Message } from "ai";
+import type { UIMessage } from "ai";
 import { MessageItem } from "./MessageItem";
 
 interface MessageListProps {
-  messages: Message[];
+  messages: UIMessage[];
 }
 
 export function MessageList({ messages }: MessageListProps) {

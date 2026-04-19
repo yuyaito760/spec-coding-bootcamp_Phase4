@@ -1,15 +1,18 @@
-import type { Message } from "ai";
+import type { UIMessage, DynamicToolUIPart } from "ai";
 import { ToolStatus } from "./ToolStatus";
 
 interface MessageItemProps {
-  message: Message;
+  message: UIMessage;
 }
 
 export function MessageItem({ message }: MessageItemProps) {
   const isUser = message.role === "user";
 
-  const toolInvocations =
-    !isUser && message.toolInvocations ? message.toolInvocations : [];
+  const toolParts = !isUser
+    ? (message.parts.filter((p) => p.type === "dynamic-tool") as DynamicToolUIPart[])
+    : [];
+
+  const textParts = message.parts.filter((p) => p.type === "text");
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -20,14 +23,12 @@ export function MessageItem({ message }: MessageItemProps) {
             : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
         }`}
       >
-        {toolInvocations.length > 0 && (
-          <ToolStatus toolInvocations={toolInvocations} />
-        )}
-        {typeof message.content === "string" && message.content && (
-          <p className="whitespace-pre-wrap text-sm leading-relaxed">
-            {message.content}
+        {toolParts.length > 0 && <ToolStatus toolParts={toolParts} />}
+        {textParts.map((part, i) => (
+          <p key={i} className="whitespace-pre-wrap text-sm leading-relaxed">
+            {part.text}
           </p>
-        )}
+        ))}
       </div>
     </div>
   );

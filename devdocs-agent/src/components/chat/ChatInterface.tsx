@@ -1,13 +1,26 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useState } from "react";
+import { useChat } from "@ai-sdk/react";
 import { MessageList } from "./MessageList";
 import { InputForm } from "./InputForm";
 import { ThemeToggle } from "../ui/ThemeToggle";
 
 export function ChatInterface() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({ api: "/api/chat" });
+  const [input, setInput] = useState("");
+  const { messages, sendMessage, status } = useChat({ api: "/api/chat" });
+  const isLoading = status === "streaming" || status === "submitted";
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+    sendMessage({ text: input });
+    setInput("");
+  };
 
   return (
     <div className="flex h-screen flex-col bg-white dark:bg-zinc-900">
