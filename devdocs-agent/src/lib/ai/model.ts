@@ -1,8 +1,7 @@
-import { createVertex } from "@ai-sdk/google-vertex";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
-const vertex = createVertex({
-  project: "project-c05b16ad-d16c-46e7-bef",
-  location: "us-central1",
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
 });
 
-export const geminiModel = vertex("gemini-2.5-flash");
+export const geminiModel = google("gemini-2.5-flash");
