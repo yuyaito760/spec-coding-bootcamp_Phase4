@@ -1,11 +1,14 @@
-import { tool } from "ai";
-import { z } from "zod";
+import { jsonSchema, tool } from "ai";
 
 export const context7ResolveLibrary = tool({
   description:
     "ライブラリ名からContext7のライブラリIDを解決する。ライブラリ・フレームワークに関する質問を受けたとき最初に呼ぶ。",
-  parameters: z.object({
-    libraryName: z.string().describe("検索するライブラリ名（例: next.js, react, tailwindcss）"),
+  inputSchema: jsonSchema<{ libraryName: string }>({
+    type: "object",
+    properties: {
+      libraryName: { type: "string", description: "検索するライブラリ名（例: next.js, react, tailwindcss）" },
+    },
+    required: ["libraryName"],
   }),
   execute: async ({ libraryName }) => {
     try {
@@ -24,10 +27,14 @@ export const context7ResolveLibrary = tool({
 export const context7QueryDocs = tool({
   description:
     "Context7のライブラリIDを使ってドキュメントを取得する。context7ResolveLibraryでIDを取得した後に呼ぶ。",
-  parameters: z.object({
-    libraryId: z.string().describe("Context7のライブラリID（例: /nextjs/nextjs）"),
-    query: z.string().describe("検索クエリ（例: App Router authentication）"),
-    tokens: z.number().optional().default(5000).describe("取得するトークン数"),
+  inputSchema: jsonSchema<{ libraryId: string; query: string; tokens?: number }>({
+    type: "object",
+    properties: {
+      libraryId: { type: "string", description: "Context7のライブラリID（例: /nextjs/nextjs）" },
+      query: { type: "string", description: "検索クエリ（例: App Router authentication）" },
+      tokens: { type: "number", description: "取得するトークン数", default: 5000 },
+    },
+    required: ["libraryId", "query"],
   }),
   execute: async ({ libraryId, query, tokens }) => {
     try {
@@ -46,8 +53,12 @@ export const context7QueryDocs = tool({
 export const tavilySearch = tool({
   description:
     "Web検索でライブラリの最新情報を検索する。Context7で情報が不足する場合のフォールバックとして使う。",
-  parameters: z.object({
-    query: z.string().describe("検索クエリ"),
+  inputSchema: jsonSchema<{ query: string }>({
+    type: "object",
+    properties: {
+      query: { type: "string", description: "検索クエリ" },
+    },
+    required: ["query"],
   }),
   execute: async ({ query }) => {
     try {

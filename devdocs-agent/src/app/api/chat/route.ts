@@ -19,12 +19,6 @@ const systemPrompt = `あなたはライブラリ・フレームワークのド�
 - 情報ソース（Context7 / Web検索 / 直接回答）を回答の末尾に明記すること。`;
 
 export async function POST(req: Request) {
-  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    return new Response("GOOGLE_GENERATIVE_AI_API_KEY が設定されていません", {
-      status: 500,
-    });
-  }
-
   const { messages } = await req.json();
 
   const result = streamText({
