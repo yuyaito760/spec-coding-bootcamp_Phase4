@@ -1,0 +1,40 @@
+{
+  "testCases": [
+    {
+      "id": "react-hooks",
+      "question": "ReactのuseEffectの使い方を教えて",
+      "expectedKeywords": ["useEffect", "副作用", "依存"],
+      "expectedTool": "searchDocs"
+    },
+    {
+      "id": "nextjs-routing",
+      "question": "Next.jsのApp Routerでの動的ルーティングについて",
+      "expectedKeywords": ["param", "動的"],
+      "expectedTool": "searchDocs"
+    },
+    {
+      "id": "tailwind-responsive",
+      "question": "Tailwind CSSでレスポンシブデザインを実装する方法",
+      "expectedKeywords": ["sm:", "md:", "lg:", "ブレークポイント"],
+      "expectedTool": "searchDocs"
+    },
+    {
+      "id": "trends-2025",
+      "question": "2025年のフロントエンド開発のトレンドは？",
+      "expectedBehavior": "最新のトレンド情報を返す",
+      "expectedTool": "searchWeb"
+    },
+    {
+      "id": "basic-loop",
+      "question": "forとwhileの違いを教えて",
+      "expectedKeywords": ["for", "while", "繰り返し"],
+      "expectedTool": null
+    },
+    {
+      "id": "supabase-auth",
+      "question": "Supabaseで認証を実装する方法",
+      "expectedKeywords": ["auth", "signIn", "signUp"],
+      "expectedTool": "searchDocs"
+    }
+  ]
+}
