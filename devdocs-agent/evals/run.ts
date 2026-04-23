@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+
 import { generateText } from 'ai';
 import { google } from '@ai-sdk/google';
 import testCases from './test-cases.json';

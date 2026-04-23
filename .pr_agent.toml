@@ -3,3 +3,4 @@ ai_provider = "anthropic"
 model = "claude-sonnet-4-6"
 custom_model_max_tokens = 200000
 fallback_models = []
+language = "Japanese"
