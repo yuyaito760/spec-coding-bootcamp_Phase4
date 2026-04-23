@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { MessageList } from "./MessageList";
 import { InputForm } from "./InputForm";
 import { ThemeToggle } from "../ui/ThemeToggle";
 
 export function ChatInterface() {
   const [input, setInput] = useState("");
-  const { messages, sendMessage, status } = useChat({ api: "/api/chat" });
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+  });
   const isLoading = status === "streaming" || status === "submitted";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
