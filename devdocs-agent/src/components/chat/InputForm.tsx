@@ -5,6 +5,7 @@ interface InputFormProps {
   isLoading: boolean;
   onInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onKeySubmit: () => void;
 }
 
 export function InputForm({
@@ -12,15 +13,13 @@ export function InputForm({
   isLoading,
   onInputChange,
   onSubmit,
+  onKeySubmit,
 }: InputFormProps) {
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      if (input.endsWith("\n")) {
-        e.preventDefault();
-        if (!isLoading && input.trim()) {
-          const form = e.currentTarget.closest("form");
-          form?.requestSubmit();
-        }
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      if (!isLoading && input.trim()) {
+        onKeySubmit();
       }
     }
   };
@@ -35,7 +34,7 @@ export function InputForm({
           value={input}
           onChange={onInputChange}
           onKeyDown={handleKeyDown}
-          placeholder="ライブラリについて質問してください...（Enter で改行、空行で Enter を押すと送信）"
+          placeholder="ライブラリについて質問してください...（Enter で送信、Shift+Enter で改行）"
           rows={3}
           className="flex-1 resize-none rounded-xl border border-zinc-300 bg-zinc-50 px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-blue-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder-zinc-500"
         />
