@@ -5,6 +5,11 @@ test.describe('DevDocs Agent', () => {
     await page.goto('/');
   });
 
+  test.afterEach(async ({ page }) => {
+    // ストリーミング完了後にネットワーク接続が切れるまで待ってからページ離脱させる
+    await page.waitForLoadState('networkidle', { timeout: 60000 });
+  });
+
   test('should display chat interface', async ({ page }) => {
     await expect(page.getByPlaceholder(/メッセージ|質問/)).toBeVisible();
     await expect(page.getByRole('button', { name: /送信/ })).toBeVisible();

@@ -18,11 +18,16 @@ export function ChatInterface() {
     setInput(e.target.value);
   };
 
+  const submitMessage = () => {
+    if (!input.trim() || isLoading) return;
+    const text = input;
+    setInput("");
+    sendMessage({ text });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    sendMessage({ text: input });
-    setInput("");
+    submitMessage();
   };
 
   return (
@@ -39,6 +44,7 @@ export function ChatInterface() {
         isLoading={isLoading}
         onInputChange={handleInputChange}
         onSubmit={handleSubmit}
+        onKeySubmit={submitMessage}
       />
     </div>
   );
