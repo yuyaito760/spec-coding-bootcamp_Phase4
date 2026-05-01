@@ -50,6 +50,62 @@ export const context7QueryDocs = tool({
   },
 });
 
+export const compareLibraries = tool({
+  description:
+    "複数のライブラリ・フレームワークを比較する質問（「AとBの違い」「AとBを比較」「A vs B」）を受けたときに呼ぶ。各ライブラリのドキュメントを並列取得し、構造化された結果を返す。",
+  inputSchema: jsonSchema<{ libraries: string[]; query: string; tokens?: number }>({
+    type: "object",
+    properties: {
+      libraries: { type: "array", items: { type: "string" }, description: "比較するライブラリ名の配列（例: [\"react\", \"vue\"]）" },
+      query: { type: "string", description: "比較の観点（例: 「違い、パフォーマンス、学習コスト」）" },
+      tokens: { type: "number", description: "各ライブラリのドキュメント取得トークン数", default: 3000 },
+    },
+    required: ["libraries", "query"],
+  }),
+  execute: async ({ libraries, query, tokens = 3000 }) => {
+    const fetchLibraryDocs = async (libraryName: string): Promise<{ docs: string; source: "context7" | "tavily" | "error" }> => {
+      try {
+        const searchRes = await fetch(
+          `https://context7.com/api/v1/search?q=${encodeURIComponent(libraryName)}`
+        );
+        if (!searchRes.ok) throw new Error(`search ${searchRes.status}`);
+        const searchData = await searchRes.json();
+        const libraryId: string | undefined = searchData?.results?.[0]?.id ?? searchData?.[0]?.id;
+        if (!libraryId) throw new Error("library ID not found");
+
+        const id = libraryId.startsWith("/") ? libraryId : `/${libraryId}`;
+        const docsRes = await fetch(
+          `https://context7.com/api/v1${id}?query=${encodeURIComponent(query)}&tokens=${tokens}`
+        );
+        if (!docsRes.ok) throw new Error(`docs ${docsRes.status}`);
+        const docs = await docsRes.text();
+        return { docs, source: "context7" };
+      } catch {
+        try {
+          const tavilyRes = await fetch("https://api.tavily.com/search", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              api_key: process.env.TAVILY_API_KEY,
+              query: `${libraryName} ${query}`,
+              search_depth: "basic",
+              max_results: 3,
+            }),
+          });
+          if (!tavilyRes.ok) throw new Error(`tavily ${tavilyRes.status}`);
+          const tavilyData = await tavilyRes.json();
+          return { docs: JSON.stringify(tavilyData), source: "tavily" };
+        } catch (e) {
+          return { docs: `情報取得失敗: ${e instanceof Error ? e.message : String(e)}`, source: "error" };
+        }
+      }
+    };
+
+    const results = await Promise.all(libraries.map(async (lib) => [lib, await fetchLibraryDocs(lib)] as const));
+    return JSON.stringify(Object.fromEntries(results));
+  },
+});
+
 export const tavilySearch = tool({
   description:
     "Web検索でライブラリの最新情報を検索する。Context7で情報が不足する場合のフォールバックとして使う。",
