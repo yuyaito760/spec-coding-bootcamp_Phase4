@@ -15,7 +15,7 @@
     {
       "id": "tailwind-responsive",
       "question": "Tailwind CSSでレスポンシブデザインを実装する方法",
-      "expectedKeywords": ["sm:", "md:", "lg:", "ブレークポイント"],
+      "expectedKeywords": ["sm:", "md:", "lg:", "ブレイクポイント"],
       "expectedTool": "searchDocs"
     },
     {
@@ -35,6 +35,20 @@
       "question": "Supabaseで認証を実装する方法",
       "expectedKeywords": ["auth", "signIn", "signUp"],
       "expectedTool": "searchDocs"
+    },
+    {
+      "id": "react-vs-vue",
+      "question": "ReactとVueの違いを教えて",
+      "expectedKeywords": ["|", "React", "Vue"],
+      "expectedBehavior": "Markdown比較表を含み、ReactとVue両方の情報を返す",
+      "expectedTool": "compareLibraries"
+    },
+    {
+      "id": "nextjs-vs-remix",
+      "question": "Next.jsとRemixを比較して",
+      "expectedKeywords": ["|", "Next.js", "Remix"],
+      "expectedBehavior": "Markdown比較表を含み、Next.jsとRemix両方の情報を返す",
+      "expectedTool": "compareLibraries"
     }
   ]
 }
