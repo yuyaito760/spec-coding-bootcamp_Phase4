@@ -6,9 +6,12 @@ import { DefaultChatTransport } from "ai";
 import { MessageList } from "./MessageList";
 import { InputForm } from "./InputForm";
 import { ThemeToggle } from "../ui/ThemeToggle";
+import { FavoriteBar } from "./FavoriteBar";
+import { useFavorites } from "@/hooks/useFavorites";
 
 export function ChatInterface() {
   const [input, setInput] = useState("");
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
   });
@@ -22,7 +25,7 @@ export function ChatInterface() {
     if (!input.trim() || isLoading) return;
     const text = input;
     setInput("");
-    sendMessage({ text });
+    sendMessage({ text }, { body: { favorites } });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -38,6 +41,11 @@ export function ChatInterface() {
         </h1>
         <ThemeToggle />
       </header>
+      <FavoriteBar
+        favorites={favorites}
+        onAdd={addFavorite}
+        onRemove={removeFavorite}
+      />
       <MessageList messages={messages} status={status} />
       <InputForm
         input={input}

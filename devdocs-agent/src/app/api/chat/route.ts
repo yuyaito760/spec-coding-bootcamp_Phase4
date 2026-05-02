@@ -30,11 +30,16 @@ const systemPrompt = `あなたはライブラリ・フレームワークのド�
 - 情報ソース（Context7 / Web検索 / 直接回答）を回答の末尾に明記すること。`;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, favorites = [] } = await req.json();
+
+  const favoriteNote =
+    (favorites as string[]).length > 0
+      ? `\n\n## ユーザーのお気に入りライブラリ\n優先的に参照するライブラリ: ${(favorites as string[]).join(", ")}\nライブラリが特定されていない質問では、まずこれらのライブラリのドキュメントを確認すること。`
+      : "";
 
   const result = streamText({
     model: geminiModel,
-    system: systemPrompt,
+    system: systemPrompt + favoriteNote,
     messages: await convertToModelMessages(messages),
     tools: {
       context7ResolveLibrary,
