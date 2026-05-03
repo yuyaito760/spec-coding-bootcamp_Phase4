@@ -1,33 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
+
+function subscribe(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  return () => observer.disconnect();
+}
+
+const getSnapshot = () => document.documentElement.classList.contains("dark");
+const getServerSnapshot = () => false;
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setIsDark(document.documentElement.classList.contains("dark"));
-  }, []);
+  const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggle = () => {
     const next = !isDark;
     document.documentElement.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
-    setIsDark(next);
   };
-
-  if (!mounted) {
-    return (
-      <button
-        className="rounded-full p-2 text-xl transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-700"
-        aria-label="テーマ切替"
-      >
-        ☀️
-      </button>
-    );
-  }
 
   return (
     <button
