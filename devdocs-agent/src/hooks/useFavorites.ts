@@ -20,7 +20,8 @@ function getSnapshot(): string[] {
   }
 }
 
-const getServerSnapshot = (): string[] => [];
+const EMPTY: string[] = [];
+const getServerSnapshot = (): string[] => EMPTY;
 
 function subscribe(callback: () => void) {
   window.addEventListener("storage", callback);
