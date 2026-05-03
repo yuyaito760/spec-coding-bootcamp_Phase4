@@ -62,9 +62,14 @@ npm run test:e2e:ui
 
 ### Eval テスト
 
-AI の回答品質を評価するテスト。
+AI の回答品質を評価するテスト。事前に開発サーバーを起動しておく必要がある。
 
 ```bash
+# ターミナル1: 開発サーバーを起動
+cd devdocs-agent
+npm run dev
+
+# ターミナル2: eval を実行
 cd devdocs-agent
 npm run eval
 ```
