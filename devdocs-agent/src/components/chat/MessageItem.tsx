@@ -1,5 +1,10 @@
+"use client";
+
 import type { UIMessage, DynamicToolUIPart } from "ai";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { ToolStatus } from "./ToolStatus";
+import { CodeBlock } from "./CodeBlock";
 
 interface MessageItemProps {
   message: UIMessage;
@@ -25,9 +30,11 @@ export function MessageItem({ message }: MessageItemProps) {
       >
         {toolParts.length > 0 && <ToolStatus toolParts={toolParts} />}
         {textParts.map((part, i) => (
-          <p key={i} className="whitespace-pre-wrap text-sm leading-relaxed">
-            {part.text}
-          </p>
+          <div key={i} className="prose prose-sm dark:prose-invert max-w-none text-sm leading-relaxed">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ pre: CodeBlock }}>
+              {part.text}
+            </ReactMarkdown>
+          </div>
         ))}
       </div>
     </div>
