@@ -54,12 +54,6 @@ cd devdocs-agent
 npm run test:e2e
 ```
 
-UI モードで実行する場合：
-
-```bash
-npm run test:e2e:ui
-```
-
 ### Eval テスト
 
 AI の回答品質を評価するテスト。事前に開発サーバーを起動しておく必要がある。
